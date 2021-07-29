@@ -18,11 +18,6 @@ aws cloudformation create-stack --stack-name sgvpc-securitygroup --template-body
 ```bash
 aws cloudformation create-stack --stack-name instancev1 --template-body file://public-instance-v1.yaml --parameters ParameterKey='vpcStackName',ParameterValue='sgpvpc' ParameterKey='vpcSecurityGroupStackName',ParameterValue='sgvpc-securitygroup' ParameterKey='appVersion',ParameterValue='v1'
 ```
-Test result : 
-```
-curl -k ec2-54-251-20-48.ap-southeast-1.compute.amazonaws.com
-<html><h1 align='center'><p style='color:blue'>This Is kumoribay - app v1</p></h1></html>
-```
 
 ## 4.Create web server 2 with http service
 - [public-instance-v2.yaml](./Templates/public-instance-v2.yaml)
@@ -30,15 +25,26 @@ curl -k ec2-54-251-20-48.ap-southeast-1.compute.amazonaws.com
 ```bash
 aws cloudformation create-stack --stack-name instancev2 --template-body file://public-instance-v2.yaml --parameters ParameterKey='vpcStackName',ParameterValue='sgpvpc' ParameterKey='vpcSecurityGroupStackName',ParameterValue='sgvpc-securitygroup' ParameterKey='appVersion',ParameterValue='v2'
 ```
-Test result : 
-```
-curl -k ec2-54-169-186-208.ap-southeast-1.compute.amazonaws.com
-<html><h1 align='center'><p style='color:blue'>This Is kumoribay - app v2</p></h1></html>
-```
+
 
 ## 5. Create ALB
 - [alb.yaml](./Templates/alb.yaml)
 ```
 aws cloudformation create-stack --stack-name sgpalb --template-body file://alb.yaml 
+```
+Test Result: 
+```
+ while sleep 0.9; do curl -k "Application-Load-Balancer-392717069.ap-southeast-1.elb.amazonaws.com"; done
+<html><h1 align='center'><p style='color:blue'>This Is kumoribay - app v1</p></h1></html>
+<html><h1 align='center'><p style='color:green'>This Is kumoribay - app v2</p></h1></html>
+<html><h1 align='center'><p style='color:green'>This Is kumoribay - app v2</p></h1></html>
+<html><h1 align='center'><p style='color:blue'>This Is kumoribay - app v1</p></h1></html>
+<html><h1 align='center'><p style='color:green'>This Is kumoribay - app v2</p></h1></html>
+<html><h1 align='center'><p style='color:blue'>This Is kumoribay - app v1</p></h1></html>
+<html><h1 align='center'><p style='color:blue'>This Is kumoribay - app v1</p></h1></html>
+<html><h1 align='center'><p style='color:green'>This Is kumoribay - app v2</p></h1></html>
+<html><h1 align='center'><p style='color:green'>This Is kumoribay - app v2</p></h1></html>
+<html><h1 align='center'><p style='color:blue'>This Is kumoribay - app v1</p></h1></html>
+<html><h1 align='center'><p style='color:green'>This Is kumoribay - app v2</p></h1></html>
 ```
 
